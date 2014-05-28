@@ -2,22 +2,7 @@ class Encryptor
   attr_reader :cipher
   
   def initialize(rotate_by)
-    @rotate_by = rotate_by
-    @cipher = build_cipher
-  end
-
-  def build_cipher
-    normal = ('a'..'z').to_a
-    rotated = normal.rotate(@rotate_by)
-    Hash[normal.zip(rotated)].merge(" " => " ")
-  end
-
-  def encrypt_letter(letter)
-    cipher[letter.downcase]
-  end
-
-  def decrypt_letter(letter)
-    cipher.key(letter.downcase)
+    @cipher = build_rotation_cipher(rotate_by)
   end
 
   def decrypt(string)
@@ -26,6 +11,25 @@ class Encryptor
 
   def encrypt(string)
     transpose(string) { |l| encrypt_letter(l) }
+  end
+
+  private
+
+  def build_rotation_cipher(rotate_by)
+    rotated = normal_letters.rotate(rotate_by)
+    Hash[normal_letters.zip(rotated)].merge(" " => " ")
+  end
+
+  def normal_letters
+    @normal_letters ||= ('a'..'z').to_a
+  end
+
+  def encrypt_letter(letter)
+    cipher[letter.downcase]
+  end
+
+  def decrypt_letter(letter)
+    cipher.key(letter.downcase)
   end
 
   def transpose(string, &block)
