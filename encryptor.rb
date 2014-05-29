@@ -17,19 +17,19 @@ class Encryptor
 
   def build_rotation_cipher(rotate_by)
     rotated = normal_letters.rotate(rotate_by)
-    Hash[normal_letters.zip(rotated)].merge(" " => " ")
+    Hash[normal_letters.zip(rotated)]
   end
 
   def normal_letters
-    @normal_letters ||= ('a'..'z').to_a
+    @normal_letters ||= (' '..'z').to_a
   end
 
   def encrypt_letter(letter)
-    cipher[letter.downcase]
+    cipher[letter]
   end
 
   def decrypt_letter(letter)
-    cipher.key(letter.downcase)
+    cipher.key(letter)
   end
 
   def transpose(string, &block)
